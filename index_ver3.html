@@ -50,7 +50,7 @@
 <body>
   <!-- <div id="fooddata"></div> -->
 
-  <table class="table  table-bordered table-rwd text-center table-striped">
+  <table class="table  table-bordered table-rwd text-center ">
     <thead class="table-dark">
       <tr>
         <!-- <th>店名</th>
@@ -61,16 +61,16 @@
         <th>地址</th> -->
         <th>標題</th>
         <!-- title -->
-        <th>開始日期</th>
+        <th>開始時間</th>
         <!-- startDate -->
-        <th>結束日期</th>
+        <th>結束時間</th>
         <!-- endDate -->
         <th>說明</th>
         <!-- descriptionFilterHtml -->
         <th>展出日期</th>
         <!-- editModifyDate -->
-        <th>展示地點</th>
-        <!-- showUnit -->
+        <th>地址</th>
+        <!-- location -->
         <th>相片</th>
         <!-- imageUrl -->
       </tr>
@@ -85,6 +85,8 @@
     </tbody>
 
   </table>
+
+  <div id="test"></div>
 
 
 
@@ -107,18 +109,15 @@
 
     // 主程式優先執行
     $(function () {
-      $.ajax({
-        type: "GET",
-        // url: "http://localhost/UL6HOME/open_data.php",
-        // url: "http://192.168.20.4/UL6HOME/open_data.php",
-        // url: "https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx",
-        url: "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6",
-        dataType: "json",
-        success: mydata,
-        error: function () {
-          alert("error");
-        }
+
+
+      $("#fooddata").load("op.json", function (response, status, request) {
+        if (status == "success")
+          alert("External content loaded successfully!");
+        if (status == "error")
+          alert("Error: " + request.status + ": " + request.statusText);
       });
+      // mydata(data);
     });
 
     // 副程式
@@ -132,42 +131,48 @@
     function mydata(data) {
       console.log(data);
       // $now = 1;
-      let need_list = [
+      need_list = [
         "title",
         "startDate",
         "endDate",
         "descriptionFilterHtml",
         "editModifyDate",
-        "showUnit",
-        // "imageUrl"
+        "location",
+        "imageUrl"
       ]
       // $("#fooddata").html(data[0]["Name"] + "<br>");
 
-      var flag = false;
+
 
       for (i = 0; i < data.length; i++) {
-        flag = true;
-        if (data[i]["imageUrl"] === "") {
-          flag = false;
-          continue;
-        }
+
+        // $("#fooddata").append(data[i]["Name"] + "<br>");
+
+        // <tr><td>湖莓宴餐坊</td><td>台東縣</td></tr>
+        // HTMLstr = "<tr><td>" + data[i]["Name"] + "</td><td>" + data[i]["City"] + "</td><td>" + data[i]["Town"] + "</td><td>" + data[i]["Tel"] + "</td><td> <img src=\"" + data[i]["PicURL"] + "\" title =\"" + data[i]["Name"] + "\"  width =\"300px\"  height=\"200px\"></img></td><td>" + data[i]["Address"] + "</td></tr>";
 
         HTMLstr = "<tr><td>";
 
-        for (str_list = 0; str_list < need_list.length; str_list++) {
-          HTMLstr += data[i][need_list[str_list]] + "</td><td>";
+        // for (str_list = 0; str_list < need_list.length; str_list++) {
+        //   HTMLstr += data[i][need_list[str_list]] + "</td><td>";
+        // }
+        HTMLstr += data[i]["title"] + "</td><td>";
+        HTMLstr += data[i]["showInfo"]["time"] + "</td><td>";
+        HTMLstr += data[i]["showInfo"]["endTime"] + "</td><td>";
+
+        HTMLstr += data[i]["descriptionFilterHtml"] + "</td><td>";
+        HTMLstr += data[i]["editModifyDate"] + "</td><td>";
+        HTMLstr += data[i]["showInfo"]["location"] + "</td><td>";
+        if (data[i]["imageUrl"] !== "") {
+          HTMLstr += '<img src="' + data[i]["imageUrl"] + '" title = "' + data[i]["title"]
+            + '"" width ="300px" height="200px"></img>' + "</td><td>";
+        } else {
+          HTMLstr += "未提供照片";
         }
-
-
-        HTMLstr += '<img src= "' + data[i]["imageUrl"] + '" title = "' + data[i]["title"]
-          + '" width ="300px" height="200px"></img>';
-
 
 
         HTMLstr += "</td></tr>";
-        if (flag) {
-          $("#fooddata").append(HTMLstr);
-        }
+        $("#fooddata").append(HTMLstr);
       };
 
 

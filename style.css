@@ -1,0 +1,36 @@
+tr{
+    cursor: pointer;
+}
+
+.tr_height{
+    max-height: 10px;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    .table-rwd thead {
+        display: none;
+    }
+
+    .table-rwd tbody tr {
+        display: block;
+    }
+
+    .table-rwd tbody td {
+        display: block;
+        /* width: 300px; */
+        font-size: small;
+    }
+
+    .table-rwd tbody td::before {
+        content: attr(td-data);
+        font-size: large;
+        color: blue;
+    }
+
+    .tr_height{
+        height: none;
+    }
+}

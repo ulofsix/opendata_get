@@ -50,29 +50,15 @@
 <body>
   <!-- <div id="fooddata"></div> -->
 
-  <table class="table  table-bordered table-rwd text-center table-striped">
+  <table class="table  table-bordered table-rwd text-center">
     <thead class="table-dark">
       <tr>
-        <!-- <th>店名</th>
+        <th>店名</th>
         <th>縣市</th>
         <th>鎮</th>
         <th>電話</th>
         <th>相片</th>
-        <th>地址</th> -->
-        <th>標題</th>
-        <!-- title -->
-        <th>開始日期</th>
-        <!-- startDate -->
-        <th>結束日期</th>
-        <!-- endDate -->
-        <th>說明</th>
-        <!-- descriptionFilterHtml -->
-        <th>展出日期</th>
-        <!-- editModifyDate -->
-        <th>展示地點</th>
-        <!-- showUnit -->
-        <th>相片</th>
-        <!-- imageUrl -->
+        <th>地址</th>
       </tr>
     </thead>
     <tbody id="fooddata">
@@ -103,16 +89,14 @@
 
   <script>
 
-
-
     // 主程式優先執行
     $(function () {
       $.ajax({
         type: "GET",
         // url: "http://localhost/UL6HOME/open_data.php",
         // url: "http://192.168.20.4/UL6HOME/open_data.php",
-        // url: "https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx",
-        url: "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6",
+        url: "https://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx",
+        // url: "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6",
         dataType: "json",
         success: mydata,
         error: function () {
@@ -122,7 +106,6 @@
     });
 
     // 副程式
-
     function showdata(data) {
       console.log(data);
       // $("#fooddata").html(data[0]["Name"] +"<br>");
@@ -132,42 +115,23 @@
     function mydata(data) {
       console.log(data);
       // $now = 1;
-      let need_list = [
-        "title",
-        "startDate",
-        "endDate",
-        "descriptionFilterHtml",
-        "editModifyDate",
-        "showUnit",
-        // "imageUrl"
-      ]
+
       // $("#fooddata").html(data[0]["Name"] + "<br>");
 
-      var flag = false;
+
 
       for (i = 0; i < data.length; i++) {
-        flag = true;
-        if (data[i]["imageUrl"] === "") {
-          flag = false;
-          continue;
-        }
 
-        HTMLstr = "<tr><td>";
+        // $("#fooddata").append(data[i]["Name"] + "<br>");
 
-        for (str_list = 0; str_list < need_list.length; str_list++) {
-          HTMLstr += data[i][need_list[str_list]] + "</td><td>";
-        }
+        // <tr><td>湖莓宴餐坊</td><td>台東縣</td></tr>
+
+        HTMLstr = "<tr><td>" + data[i]["Name"] + "</td><td>" + data[i]["City"] + "</td><td>" + data[i]["Town"] + "</td><td>" +
+
+          data[i]["Tel"] + "</td><td> <img src=\"" + data[i]["PicURL"] + "\" title =\"" + data[i]["Name"] + "\"  width =\"300px\"  height=\"200px\"></img></td><td>" + data[i]["Address"] + "</td></tr>";
 
 
-        HTMLstr += '<img src= "' + data[i]["imageUrl"] + '" title = "' + data[i]["title"]
-          + '" width ="300px" height="200px"></img>';
-
-
-
-        HTMLstr += "</td></tr>";
-        if (flag) {
-          $("#fooddata").append(HTMLstr);
-        }
+        $("#fooddata").append(HTMLstr);
       };
 
 
