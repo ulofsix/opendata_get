@@ -13,38 +13,9 @@
   <!-- LOGO -->
   <link rel="shortcut icon" href="https://ulofsix.github.io/todolist/imgs/book-2.png">
   <link rel="bookmark" href="https://ulofsix.github.io/todolist/imgs/book-2.png">
+  <link rel="stylesheet" href="style.css">
 
 
-  <style>
-    @media screen and (max-width: 768px) {
-      .table-rwd thead {
-        display: none;
-
-      }
-
-      .table-rwd tbody tr {
-        display: block;
-
-      }
-
-      .table-rwd tbody td {
-        display: block;
-        /* width: 300px; */
-        font-size: small;
-
-      }
-
-      .table-rwd tbody td::before {
-        content: attr(td-data);
-        font-size: large;
-        color: blue;
-      }
-
-
-
-
-    }
-  </style>
 </head>
 
 <body>
@@ -85,6 +56,11 @@
     </tbody>
 
   </table>
+
+  <div id="loading" class="absolute_center">
+      讀取中......
+  </div>
+  <!-- <div id="loading" class="animate__animated animate__rotateIn"></div> -->
 
 
 
@@ -131,6 +107,8 @@
 
     function mydata(data) {
       console.log(data);
+      // 取消讀取動畫
+      $("#loading").toggleClass("hidden");
       // $now = 1;
       let need_list = [
         "title",
